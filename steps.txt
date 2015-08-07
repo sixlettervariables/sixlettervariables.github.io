@@ -1,0 +1,102 @@
+ECG Test Single Page Application
+
+1. github hosting
+2. React vs Angular vs Knockout
+3. Amazon Route53
+4. Amazon Web API Gateway
+5. DynamoDB vs SimpleDB ?
+6. S3 static hosting of test banks and ECG's
+
+Costing Targets: <$5/mo
+* DNS (<$1/mo)
+* S3 (<$1/mo)
+* API Gateway (<$1/mo)
+* DB ($2-3/mo)
+
+Steps:
+1. GH page
+2. SPA w/o Backend
+3. SPA test generator 
+4. API Gateway
+5. Orgs+emails
+
+Github pages:
+/index.html
+/test.html?bank={bankID}
+	{bankID} guid file name from S3 object; folder with restricted reads and different IAM role
+		* Use JSON for test bank
+		{
+			"name": "Test Bank",
+			"desc": "Test Description",
+			"author": "Author 1, Author 2",
+			"license": "License text in full",
+			"licenseUrl": "http://yourlicensehere",
+			"questions": {
+				"http://....": { "answer": 1, "tags": [ "IWMI"], "d": "This is an IWMI with..." },
+				"http://....": { "answer": 0, "tags": [ "LVH"], "d": "This is a classic case of LVH..." },
+				...
+			}
+		}
+	Leverage existing HTML/JS for test interface
+	Use API Gateway for the saving, consider S3 creation of HTML results page
+/stats.html?bank={bankID}
+	* Pull from Lambda job that accumulates stats from DynamoDB
+		* Hourly? Daily? Record count (every 100?)?
+/learn.html
+/tags/
+	{TAG}.html
+		* JSON mapping of tags to HTML pages stored in S3 or github
+		{
+			"IWMI": "inferior-wall-myocardial-infarction.html",
+			"LWMI": "lateral-wall-myocardial-infarction.html",
+			...
+		}
+
+API Gateway:
+/test/take
+	[body]
+		{
+			"instanceId": "...GUID...",
+			"user": {
+				/* store in cookie if REMEMBER ME */
+				"email": "joe@example.com",
+				"orgId": "...GUID...",
+				"level": 0, /*enum*/
+				"exp": 4, /*likert*/
+				"confidence": 3, /*likert*/
+				...
+			},
+			"bankId": "...GUID...",
+			"answers": {
+				"http://....": 1,
+				"http://....": 0,
+				...
+			}
+		}
+	Action
+		NodeJS + Lambda
+			* Create S3 HTML results page by inserting test bank JSON and answers?
+			* Add results/stats to DB (?)
+				(Consider option that allows map-reduce, maybe)
+			* If {orgId} present try lookup and if so email results to admin
+				* S3 JSON mapping of {orgId} to admin name email
+					{
+						"...GUID...": {
+							"org": "Name of Organization",
+							"contact": "John Doe",
+							"email": "Contact Email"
+						},
+						...
+					}
+	Asserts
+		No GUID shared
+		
+Lambda Stats Jobs:
+	per-test.html
+	per-level.html
+	per-exp.html
+	per-confidence.html
+	per-level-exp.html
+
+User Accounts ?
+	Twitter Digits perhaps
