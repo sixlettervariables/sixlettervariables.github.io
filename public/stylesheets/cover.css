@@ -24,18 +24,10 @@ a:hover {
  * Base structure
  */
 
-html {
-  height: 100%;
-  background: url('//cdn.christopherwatford.com/images/wedding-cover.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; 
-}
-
+html,
 body {
   height: 100%;
-  background-color: transparent;
+  background-color: #333;
 }
 body {
   color: #fff;
@@ -64,10 +56,6 @@ body {
 /* Padding for spacing */
 .inner {
   padding: 30px;
-}
-
-.video-js { 
-background-color: transparent; 
 }
 
 
@@ -105,11 +93,6 @@ background-color: transparent;
 .masthead-nav > .active > a:focus {
   color: #fff;
   border-bottom-color: #fff;
-}
-
-.masthead {
-	background-color: rgba(0, 0, 0, 0.25);
-	padding: 4px;
 }
 
 @media (min-width: 768px) {
@@ -175,6 +158,6 @@ background-color: transparent;
   .masthead,
   .mastfoot,
   .cover-container {
-    width: 860px;
+    width: 700px;
   }
 }
