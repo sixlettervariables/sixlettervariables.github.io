@@ -26,7 +26,7 @@ a:hover {
 
 html {
   height: 100%;
-  background: url('//cdn.christopherwatford.com/images/wedding-cover.jpg') no-repeat center center fixed; 
+  background: url('//cdn.christopherwatford.com/public/images/wedding-cover.jpg') no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
